@@ -35,9 +35,9 @@ A typical COI communication sequence includes the following steps:
 4. Show chat messages to the end user.
 
 # Checking for Server Side COI Support 
-A COI client should check for COI support from the server first. it will CAPABILITY after having logged into the IMAP service. If the returned capabilities list contains the "COI" capability, then the client does not need to filter messages on the client side. It will also have more advanced options at its disposal, see the server side specifications for details.
+A COI client should check for COI support from the server first. 
 
-After signing into the IMAP service with your user credentials, call CAPABILITY. When the server returns the "COI" capability you will know that this is supported. You will find out configuration values and activate COI support for your user by calling ENABLE COI.
+After signing into the IMAP service with your user credentials, call `CAPABILITY`. When the server returns the "COI" capability you will know that this is supported. You will find out configuration values and activate COI support for your user by calling `ENABLE COI`.
 
 Please refer to the forthcoming COI Server Specification for details.
 
