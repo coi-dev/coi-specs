@@ -4,6 +4,7 @@
 Following topics need further discussion:
 * Hashing algorithm - for now we assume SHA3-256 for hashing email addresses, this might be changed in the future.
 * End-to-end encryption when the communication partners are on COI-enabled servers and use COI-compliant clients. [Message Layer Security](https://datatracker.ietf.org/wg/mls/about/) may provide a basis for that in the future.
+* We consider forwarding rules to help limiting the spread of fake news.
 * There are various todos spread throughout this document.
 
 # Table of Contents
