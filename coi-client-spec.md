@@ -1297,9 +1297,31 @@ For moving the message to COI/CHATS a COI client has the following options:
 * Client listens for incoming mails on *INBOX* either using IMAP IDLE or IMAP NOTIFY, and then moves matching chat mails manually to *COI/CHATS*.
 * Pending the user's approval, a service could monitor incoming mails and do that.
 
-After moving a message that originates from the user itself, identified either with the primary email address or a valid alias address, this message should be marked as read at the same time.
+After moving a message that originates from the user herself/himself, identified either with the primary email address or a valid alias address, this message should be marked as read at the same time:
 
-*TODO describe how to do that.*
+*Example pseudo code for moving incoming messages:*
+```
+onNewIncomingMessage(msg) {
+  if (msg.sender == me) {
+    markMessageAsRead(msg);
+    if (isCoiMessage(msg)) {
+       if (isConfigurationMoveToCoiChats()) {
+          moveToCoiChats(msg);
+       } else {
+          moveToSent(msg);
+       }
+    } else {
+      moveToSent(msg);
+    }
+  } else if (isCoiMessage(msg) 
+      && isConfigurationMoveToCoiChats()) 
+      {
+        moveToCoiChats(msg);
+      }
+  }
+}
+```
+
 
 # Folders
 When a COI client connects to a non-COI IMAP server, it might need to create several folders initially:
@@ -1308,7 +1330,10 @@ When a COI client connects to a non-COI IMAP server, it might need to create sev
 * *COI/CONTACTS* for storing contacts.
 * *BLOCKED* for storing messages originating from blocked contacts.
 
-*TODO describe IMAP details*
+A COI-compliant folders generates these folders automatically when a client calls `ENABLE COI` for the first time. Additionally, the folder *COI/CONFIGURATION* is created, that is used for configuring the COI server.
+
+
+*TODO describe IMAP details like subscription status*
 
 # Security Considerations
 The security consideration of the referenced standards also apply to this COI client specification definition.
