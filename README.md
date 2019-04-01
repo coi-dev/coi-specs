@@ -2,7 +2,7 @@
 The open specification for COI compatible clients.
 
 * [COI Client Spec](coi-client-spec.md)
-* [SMTP: Submission Token Extension Draft](https://www.ietf.org/staging/draft-ietf-extra-smtp-submission-token-00.txt)
+* [SMTP: Submission Token Extension Draft](https://datatracker.ietf.org/doc/draft-slusarz-extra-smtp-submission-token/)
 
 # What is COI
 COI is an open chat communication standard built on top of IMAP and SMTP.  
