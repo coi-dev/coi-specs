@@ -1124,7 +1124,7 @@ hey folks, I might be late, but I look forward to meet you today!
 A mailing list discussion is from a clients view like a 1:1 chat with one person. Sometimes, users answer to both to the sender of a message and to the mailing list. It is RECOMMENDED that a COI client detects such duplicate messages and only shows the message list message, not additionally a 1:1 chat with the sender. This can be detected by looking at the first message-ID given in the `References` or `Reply-To` header fields. 
 
 ### Mentions in Group Messages
-It is RECOMMENDED that COI clients allow to mention users and that mentions for the current users are highlighted.
+It is RECOMMENDED that COI clients allow to mention users and that mentions for the current users are highlighted. Additionally, it is RECOMMEND to trigger a notifications for a mentioned participant even when the participant has muted the corresponding group conversation.
 
 Mentions follow the scheme `@"?NAME"?:EMAILADDRESS`, e.g. `@Gabe:gabe+private@example.com` or `@"Gabe Lastname":gabe+private@example.com`.
 
