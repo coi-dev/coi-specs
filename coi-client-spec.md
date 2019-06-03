@@ -1128,13 +1128,15 @@ It is RECOMMENDED that COI clients allow to mention users and that mentions for 
 
 Mentions follow the scheme `@"?NAME"?:EMAILADDRESS`, e.g. `@Gabe:gabe+private@example.com` or `@"Gabe Lastname":gabe+private@example.com`.
 
+Additionally, the ``@all`` mention SHOULD be supported. This mention should trigger a notification for any group participant.
+
 It is RECOMMENDED that COI clients only show the name-part of the mention text, not the full mention with the email address. Note that mentions can be done in both the plain text as well as the HTML part of a message.
 
 In HTML the representation MUST be done with a link using the `mention` CSS class:
 ```
 <a class="mention" href="mailto:gabe+private@example.com">@Gabe</a>
 ```
-It is RECOMMENDED to show profile details of a mentioned participant, when a user interacts with the mention.
+It is RECOMMENDED to show profile details of a mentioned participant along with some options such as starting a direct chat, when a user interacts with the mention.
 
 ### Changing Group Definitions and Processing Changes
 Any group member can update a group, i.e. change the name, description,  avatar or participants. So like email, a COI group chat has no hierarchy.
@@ -1302,7 +1304,7 @@ After moving a message that originates from the user herself/himself, identified
 *Example pseudo code for moving incoming messages:*
 ```
 onNewIncomingMessage(msg) {
-  if (msg.sender == me) {
+  if (msg.from == me && msg.to != me) {
     markMessageAsRead(msg);
     if (isCoiMessage(msg)) {
        if (isConfigurationMoveToCoiChats()) {
