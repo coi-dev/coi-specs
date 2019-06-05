@@ -456,7 +456,7 @@ Message-ID: <coi$KJ23928L.112222312&8@sample.com>
 References: <coi$434571BC.89A707D2@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Chat-Version: 1.0
-Chat-Content: collapsed;
+Chat-Content: collapsed
 In-Reply-To: <coi$2131232.AKJSD@sample.com>
 MIME-Version: 1.0  
  
