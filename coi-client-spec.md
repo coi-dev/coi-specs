@@ -793,6 +793,8 @@ Hi Alice, can you please advise me?
 
 Sending messages to a group is simple in principle: just send message to several participants that are defined in the `To` field. 
 
+A group must at least contain one recipient, this can be just the same as the sender. This allows user to create specific channels for themselves, e.g. "tasks" or "ideas".
+
 Each group has an assigned ID. The group ID MUST only contain alphanumeric , minus and underline characters:  `[0-9A-Za-z_-]+`. A group ID MUST be case-sensitive and MUST contain at least 12 characters.
 
 To identify groups in replies from non-COI-compliant clients, the group ID is embedded into the message ID in the format `coi$group.<groupd ID>.<domain unique value>@<domain>`, e.g.
@@ -1047,9 +1049,9 @@ cGbr/7MaNY4TfwDbd9AYja7LyQAAAABJRU5ErkJggg==">
 
 ### Leaving a Group: Group Participant Left Message
 
-Any user in a group can leave a group chat. 
+Any user in a group can pro-actively leave a group chat. 
 
-When doing so, a COI client MUST send a group participant left message. The `Chat-Content` header field MUST be set to "groupleft". A COI client SHOULD include a short description about what happened, this MAY be a user-generated reason. A receiving COI client MUST update the internal represenation of the group and remove the leaving sender of a a `groupleft` message. The `Reply-To` header MAY be set to remaining group participants, so that users on non-COI-compatible clients will answer by default to only the remaining group participants.
+When doing so, a COI client MUST send a group participant left message. The `Chat-Content` header field MUST be set to `groupleft`. A COI client SHOULD include a short description about what happened, this MAY be a user-generated reason. A receiving COI client MUST update the internal represenation of the group and remove the leaving sender of a a `groupleft` message. The `Reply-To` header MAY be set to remaining group participants, so that users on non-COI-compatible clients will answer by default to only the remaining group participants.
 
 A COI client SHOULD also send a `groupleft` message to a recipient that has been removed from a group by another user.
 
@@ -1082,10 +1084,10 @@ However, a non-COI-compatible client is not aware about the semantics and would 
 
 In that case, a COI client SHOULD generate a new group:
 * The group name SHOULD be based on `Subject` field cleared any reply-notations like "RE:".
-* The group participants are extracted from the `To` and `CC` fields.
-* The group-ID should be generated.
+* The group participants SHOULD be extracted from the `To` and `CC` fields.
+* The group-ID SHOULD be generated.
 
-When replying to such a message, a COI client SHOULD create a new thread by using no `References` header field, a new `Message-ID` header field and the group-name in the `Subject` field.
+When replying to such a message, a COI client SHOULD create a new thread by using no or a new `References` header field, a new `Message-ID` header field and the group-name in the `Subject` field.
 
 ### Group Message Encryption
 If the group conversation should be encrypted, the originating client MUST include the `key` field for each group participants' `h-card` element. If the public keys are known for all group participants, a COI client SHOULD encrypt messages for the group by default.
@@ -1150,10 +1152,13 @@ As the group name is specified in the `Subject` field, it is easy for traditiona
 
 #### Processing Group Participants Changes
 Group participants can be changed in different ways:
-* By changing the recipients in the `To` or `CC` header fields of a group message. If a COI-compatile client  does this, a corresponding `Chat-Content: groupinfo` message part MUST be added, when one or more participants are added.
+* By changing the recipients in the `To` or `CC` header fields of a group message. If a COI-compatile client  does this, a corresponding `Chat-Content: groupinfo` message part MUST be added, when one or more participants are added or removed.
 * By leaving the group with a `Chat-Content: groupleft` message.
 
 When a participant is being added, clients SHOULD check if that participant has previously sent a `groupleft` message. In that case, the client SHOULD check if the `Reply-To` header of the adding message refers to a message older than the `groupleft` message. If that is the case, the re-addition of the user SHOULD be ignored.
+
+When a non-COI-compatible client replies to a group message and this would result into removing any other participant apart from the recipient, a COI client SHOULD assume that a user selected the *reply* rather than the *reply all* option and SHOULD discard that group participant change. Instead, this message SHOULD be shown within the respective 1:1 chat conversation with the sender.
+
 
 #### Processing Group Description and Avatar Changes
 Clients can also change the group description and avatar with a corresponding `groupinfo` message part at any time. Ideally, each change is accompanied by a user-generated message. A client SHOULD only use the latest `groupinfo` that has been received.
@@ -1238,16 +1243,44 @@ Hello COI world, this message is pinned!
 ```
 
 ## Poll Messages
-Polls are an integral part of social communication, e.g. for finding a suitable date or selecting a preferred option. To provide support for this interaction, COI clients SHOULD support displaying and voting poll messages.
+Polls are an integral part of social communication, e.g. for finding a suitable date or selecting a preferred option. To provide support for this interaction, COI clients are RECOMMENDED to support displaying and voting for polls.
 
-*TODO describe poll messages in more detail*/
+Note that polls are a *client-only feature*, so clients are solely responsible for managing votes and results.
+
+A poll has the following characteristics:
+* A title
+* An optional description
+* A list of options with at least 2 entries, each one consisting of either
+  * Text
+  * Datetime
+  * Image
+  * Any other binary, e.g. voice or video
+* A potential background image or video
+* A definition whether multiple options or only a single option can be chosen. By default multiple options can be selected.
+* A definition whether participants may vote only once or multiple times. By default participants can vote multiple times, but each vote will override the previous vote.
+* `p-poll-option` for a text option, e.g. `<li class="p-poll-option">E.T.</li>`
+* `dt-poll-option` for a datetime object object, e.g. `<li class="dt-poll-option">2019-12-31</li>`.
+
+### Poll Initiation Message
+*Example for a poll initiation message:*
+```
+
+```
+
+### Poll Vote Message
+
+
+### Poll Closed Message
+
+
+
 
 
 
 ## Extension Messages
 COI clients MAY introduce client specific messages. Those messages SHOULD always include a text/plain,  text/html or binary inline part explaining the contents for users of non COI compliant clients. COI clients MAY use the "Chat-Content" header field for their data message parts. To ensure uniqueness of "Chat-Content" header values, clients MUST start the value with a client-specific name. A reverse domain for the value start is RECOMMENDED, for example:
 ```
-Chat-Content: com.awesomeclient.mycustomevent
+Chat-Content: com.awesomeclient.MyCustomMessage
 ```
 
 # Message Encryption
