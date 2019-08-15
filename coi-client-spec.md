@@ -1,6 +1,9 @@
 # Status & Discussion
 *Status: DRAFT*
 
+Breaking changes:
+* 2019-07: we now use "chat$" for Message-ID based identification.
+
 Following topics need further discussion:
 * Hashing algorithm - for now we assume SHA3-256 for hashing email addresses, this might be changed in the future.
 * End-to-end encryption when the communication partners are on COI-enabled servers and use COI-compliant clients. [Message Layer Security](https://datatracker.ietf.org/wg/mls/about/) may provide a basis for that in the future.
@@ -70,7 +73,7 @@ Following topics need further discussion:
 * [IANA Considerations](#iana-considerations)
 
 # Introduction
-COI - Chat Over IMAP - provides a basis for realizing modern messaging services on top of the existing email infrastructure. COI leverages the existing open and federated email infrastructure to provide an open chat functionality accessible to everyone with an email address.
+COI - Chat Over IMAP - provides a basis for modern messaging services on top of the existing email infrastructure. COI leverages the existing open and federated email infrastructure to provide an open chat functionality accessible to everyone with an email address.
 
 COI will work with standard IMAP servers and IMAP clients and will work better with COI-aware clients and servers. Initially, most email servers will not provide support for COI, so we need ways how to realize the most important functions on top of the existing infrastructure.
 
@@ -149,7 +152,7 @@ COI-aware email clients and COI IMAP servers MUST send messages conforming to th
 * A COI message MUST contain the `Chat-Version` header field with a value of "1.0". Note that further parameters MAY follow which will be separated by semicolons, e.g. `Chat-Version: 1.0;name=value`.
 * A COI message MUST only contain one address in the "From" field.
 * A COI message MUST contain a `Date` header field with a value adhering to [RFC 5322](https://tools.ietf.org/html/rfc5322#section-3.3).
-* A COI message MUST contain a `Message-ID` header field in the following format: "coi$" + domain-unique ID + "@" + mail domain, e.g. `<coi$KJKJK2312321312KJ@mydomain.org>`.   
+* A COI message MUST contain a `Message-ID` header field in the following format: "chat$" + domain-unique ID + "@" + mail domain, e.g. `<chat$KJKJK2312321312KJ@mydomain.org>`.   
 * A COI message MUST contain `MIME-Version: 1.0` in the header.
 * A COI message SHOULD contain a `References` header field with the message-IDs of the initial message and the last message only. Note that this recommendations is contrary to the RFC 5322 recommendation, which results in all message-ID are all parent messages being referenced. However, in a chat conversation there will be way more messages than in a typical email thread, so it would be impractical to reference all previous messages.
 * A COI message SHOULD contain a `In-Reply-To` header when answering to a previous message. This header field contains the message-ID in of the replied message.
@@ -198,9 +201,9 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$S2571BC.2878&8@sample.com> 
+Message-ID: <chat$S2571BC.2878&8@sample.com> 
 Content-Type: text/plain; charset=UTF-8; format="flowed" 
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 MIME-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com> 
@@ -220,10 +223,10 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$22938.8238702@sample.com> 
+Message-ID: <chat$22938.8238702@sample.com> 
 Content-Type: multipart/alternative;
  boundary=unique-boundary-1
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com>
 MIME-Version: 1.0
@@ -284,11 +287,11 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$434571BC.8070702@sample.com> 
+Message-ID: <chat$434571BC.8070702@sample.com> 
 Content-Type: image/jpeg
 Content-Transfer-Encoding: base64
 Content-Disposition: inline;filename=earth.jpg;size=2048
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com>
 MIME-Version: 1.0 
@@ -307,10 +310,10 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$123AB223.8238702@sample.com> 
+Message-ID: <chat$123AB223.8238702@sample.com> 
 Content-Type: multipart/mixed;
  boundary=unique-boundary-1
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com>
 MIME-Version: 1.0
@@ -354,10 +357,10 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$123AB223.8238702@sample.com> 
+Message-ID: <chat$123AB223.8238702@sample.com> 
 Content-Type: multipart/mixed;
  boundary=unique-boundary-1
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com>
 MIME-Version: 1.0
@@ -391,13 +394,13 @@ An edit message MUST contain set the `Chat-Content` header field to "ammend" and
 
 ```
 Chat-Content: ammend
-In-Reply-To: <coi$434571BC.8070702@sample.com>
+In-Reply-To: <chat$434571BC.8070702@sample.com>
 ```
 If a message should be deleted, then the COI client MUST set the `Chat-Content` header field to "collapsed":
 
 ```
 Chat-Content: collapse; 
-In-Reply-To: <coi$434571BC.8070702@sample.com>
+In-Reply-To: <chat$434571BC.8070702@sample.com>
 ```
 
 A message can be edited and/or deleted several times and COI client SHOULD only show the latest version. An edit and delete message MAY contain a read receipt request, which SHOULD be processed normally. To not create a sense of false security, it is RECOMMENDED that clients show the history of edited and delete messages. A deleted message is RECOMMENDED to be shown as "this message has been deleted".
@@ -417,8 +420,8 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$S2571BC.287888@sample.com> 
-References: <coi$434571BC.89A707D2@sample.com> 
+Message-ID: <chat$S2571BC.287888@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Chat-Version: 1.0
 MIME-Version: 1.0
@@ -434,12 +437,12 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$2131232.AKJSD@sample.com> 
-References: <coi$434571BC.89A707D2@sample.com> 
+Message-ID: <chat$2131232.AKJSD@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Chat-Version: 1.0
 Chat-Content: edit;
-In-Reply-To: <coi$S2571BC.287888@sample.com
+In-Reply-To: <chat$S2571BC.287888@sample.com
 MIME-Version: 1.0
  
 My dear friend, this is a message to you!
@@ -452,12 +455,12 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$KJ23928L.112222312&8@sample.com> 
-References: <coi$434571BC.89A707D2@sample.com> 
+Message-ID: <chat$KJ23928L.112222312&8@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Chat-Version: 1.0
 Chat-Content: collapsed
-In-Reply-To: <coi$2131232.AKJSD@sample.com>
+In-Reply-To: <chat$2131232.AKJSD@sample.com>
 MIME-Version: 1.0  
  
 (original message marked as deleted)
@@ -487,8 +490,8 @@ From: Alice <you@recipientdomain.com>
 To: Bob <me@example.com>
 Subject: Chat: Read receipt
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$122B223.823202@sample.com> 
-References: <coi$434571BC.89A707D2@sample.com> 
+Message-ID: <chat$122B223.823202@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Content-Type: multipart/report; 
  report-type=disposition-notification;
@@ -502,7 +505,7 @@ Content-Type: message/disposition-notification
 Reporting-UA: joes-pc.cs.recipientdomain.com; Foomail 97.1
 Original-Recipient: rfc822;you@recipientdomain.com
 Final-Recipient: rfc822;you@recipientdomain.com
-Original-Message-ID: <coi$199509192301.23456@sample.com>
+Original-Message-ID: <chat$199509192301.23456@sample.com>
 Disposition: manual-action/MDN-sent-manually; displayed
 
 --RAA14128.773615765/recipientdomain.com--
@@ -575,7 +578,7 @@ COI-From-Hash: 74b3c446c189580045a942b90b7461128bc334b3b67e9f63c0c06189248c9bb0
 COI-From-Hash: 834d1654133366cef4d81e81a7099f413b1b85b9fc9dd62140491303dec56532
 Subject: Contact
 Date: Mon, 4 Dec 2019 17:51:37 +0100 
-Message-ID: <coi$22323i89.AB29702@sample.com> 
+Message-ID: <chat$22323i89.AB29702@sample.com> 
 Content-Type: text/html; charset=UTF-8
 Chat-Version: 1.0
 MIME-Version: 1.0
@@ -636,7 +639,7 @@ A user profile storage message is structured like a contact storage message with
 From: Alice <alice@example.com>
 Subject: Profile
 Date: Mon, 4 Dec 2019 17:51:37 +0100 
-Message-ID: <coi$KJK2342KJ.K232989KJ@sample.com> 
+Message-ID: <chat$KJK2342KJ.K232989KJ@sample.com> 
 Content-Type: multipart/mixed; 
  boundary="SDKJK2323.23123/example.com"
 Chat-Version: 1.0
@@ -725,7 +728,7 @@ From: Alice <alice@example.com>
 To: bob@recipientdomain.com
 Subject: Chat: Hello my ...
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$238788.AB29702@sample.com> 
+Message-ID: <chat$238788.AB29702@sample.com> 
 Content-Type: multipart/alternative; 
  boundary="SDKJK2233.23278827/sample.com"
 Chat-Version: 1.0
@@ -774,9 +777,9 @@ From: Bob <bob@example.com>
 To: Alice <alice@example.com> 
 Subject: Chat 
 Date: Mon, 4 Dec 2019 15:23:13 +0100 
-Message-ID: <coi$S2323BC.2878&8@sample.com> 
+Message-ID: <chat$S2323BC.2878&8@sample.com> 
 Content-Type: text/plain; charset=UTF-8; format="flowed"
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 Chat-Content: profilerequest
 MIME-Version: 1.0
@@ -797,10 +800,10 @@ A group must at least contain one recipient, this can be just the same as the se
 
 Each group has an assigned ID. The group ID MUST only contain alphanumeric , minus and underline characters:  `[0-9A-Za-z_-]+`. A group ID MUST be case-sensitive and MUST contain at least 12 characters.
 
-To identify groups in replies from non-COI-compliant clients, the group ID is embedded into the message ID in the format `coi$group.<groupd ID>.<domain unique value>@<domain>`, e.g.
+To identify groups in replies from non-COI-compliant clients, the group ID is embedded into the message ID in the format `chat$group.<groupd ID>.<domain unique value>@<domain>`, e.g.
 
 ```
-Message-ID: <coi$group.4321dcba1234.ABSKDJK23223.293892839@example.com>
+Message-ID: <chat$group.4321dcba1234.ABSKDJK23223.293892839@example.com>
 ```
 
 Groups are identified by parsing this `Message-ID` or - in the case of replies from non-COI-compliant clients - the first message-ID in the `References` header field.
@@ -821,9 +824,9 @@ From: Me Myself <me@example.com>
 To: alice@example.com; bob@example.com
 Subject: My Crew
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$group.4321dcba1234.S2571BC.2878&8@sample.com> 
+Message-ID: <chat$group.4321dcba1234.S2571BC.2878&8@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
-References: <coi$group.4321dcba1234.434571BC.89A707D2@sample.com> 
+References: <chat$group.4321dcba1234.434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 MIME-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com> 
@@ -860,7 +863,7 @@ Group storage messages SHOULD be stored in the *COI/CONTACTS* folder, unless the
 From: Me Myself <me@example.com> 
 Subject: Group
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$group.1234abcd4321.238788.AB29702@example.com> 
+Message-ID: <chat$group.1234abcd4321.238788.AB29702@example.com> 
 Content-Type: text/html; charset=UTF-8
 Chat-Version: 1.0
 MIME-Version: 1.0
@@ -958,7 +961,7 @@ From: Alice <alice@example.com>
 To: john.doe@example.com; carrol@example.com
 Subject: My Crew
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$group.1234abcd4321.238788.AB29702@example.com> 
+Message-ID: <chat$group.1234abcd4321.238788.AB29702@example.com> 
 Content-Type: multipart/alternative; 
  boundary="A22090S.123213/example.com"
 Chat-Version: 1.0
@@ -1063,10 +1066,10 @@ From: Bob Barr <bob@example.com>
 To: alice@example.com; carrol@example.com; dean@example.com;
 Subject: My Crew
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$group.1234abcd4321.Asd23212.A2328@example.com>
-In-Reply-To: <coi$group.1234abcd4321.123213.213223@example.com>
-References: <coi$group.1234abcd4321.238788.AB29702@example.com>
- <coi$group.1234abcd4321.123213.213223@example.com>
+Message-ID: <chat$group.1234abcd4321.Asd23212.A2328@example.com>
+In-Reply-To: <chat$group.1234abcd4321.123213.213223@example.com>
+References: <chat$group.1234abcd4321.238788.AB29702@example.com>
+ <chat$group.1234abcd4321.123213.213223@example.com>
 Content-Type: text/plain; charset=UTF-8
 Chat-Version: 1.0
 Chat-Content: groupleft
@@ -1108,11 +1111,11 @@ From: Alice <alice@example.com>
 To: bob@example.com; carrol@example.com; dean@example.com; 
 Subject: My Crew
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$group.5422989123KJKK.S2571BC.2878&8@sample.com> 
+Message-ID: <chat$group.5422989123KJKK.S2571BC.2878&8@sample.com> 
 Content-Type: text/plain; charset=UTF-8; format="flowed"
-References: <coi$group.5422989123KJKK.434571BC.89A707D2@sample.com>
- <coi$group.5422989123KJKK.LK23299KJK.KHG8DHJ320LM@sample.com>
-In-Reply-To: <coi$group.5422989123KJKK.LK23299KJK.KHG8DHJ320LM@sample.com>
+References: <chat$group.5422989123KJKK.434571BC.89A707D2@sample.com>
+ <chat$group.5422989123KJKK.LK23299KJK.KHG8DHJ320LM@sample.com>
+In-Reply-To: <chat$group.5422989123KJKK.LK23299KJK.KHG8DHJ320LM@sample.com>
 Chat-Version: 1.0
 Chat-Content: grouprequested
 MIME-Version: 1.0
@@ -1182,7 +1185,7 @@ From: Alice <alice@example.com>
 To: john.doe@example.com
 Subject: Chat: 
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$232389K88.K2329KSOI@example.com> 
+Message-ID: <chat$232389K88.K2329KSOI@example.com> 
 Content-Type: multipart/alternative; 
  boundary="BKKHJ222.123213/example.com"
 Chat-Version: 1.0
@@ -1230,11 +1233,11 @@ From: Me Myself <me@example.com>
 To: You <you@recipientdomain.com> 
 Subject: Chat: Hello COI...
 Date: Mon, 4 Dec 2019 15:51:37 +0100 
-Message-ID: <coi$S2571BC.2878&8@sample.com> 
+Message-ID: <chat$S2571BC.2878&8@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Content-Disposition: pinned;
  timeout=Tue, 5 Dec 2019 0:00:00 +0100 
-References: <coi$434571BC.89A707D2@sample.com> 
+References: <chat$434571BC.89A707D2@sample.com> 
 Chat-Version: 1.0
 MIME-Version: 1.0
 Disposition-Notification-To: Me Myself <me@example.com> 
@@ -1324,8 +1327,8 @@ Depending on the above scenarios, COI clients MAY move chat messages to the *COI
 
 Replies of non-COI compliant clients can be identified as chat message by having:
 
-* Having a reference that starts with a message ID starting with `<coi$`, or
-* Having an `In-Reply-To` header field with a message-ID that starts with `<coi$`.
+* Having a reference that starts with a message ID starting with `<chat$`, or
+* Having an `In-Reply-To` header field with a message-ID that starts with `<chat$`.
 
 For moving the message to COI/CHATS a COI client has the following options:
 
