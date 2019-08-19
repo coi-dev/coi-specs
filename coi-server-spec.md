@@ -119,7 +119,7 @@ Clients indicate their desire for a mail account to begin supporting server-side
 
 Allowed values are:
 
- * `yes` for enabling COI for the current user, and
+* `yes` for enabling COI for the current user, and
 * `no` for disabling COI.
 
 Other values MAY result into a NO response. It is RECOMMENDED that values are treated case-sensitive, i.e. only lower-case values are valid.
