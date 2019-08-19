@@ -101,9 +101,8 @@ A typical COI communication sequence includes the following steps:
 # Checking for Server Side COI Support 
 A COI client should check for COI support from the server first. 
 
-After signing into the IMAP service with your user credentials, call `CAPABILITY`. When the server returns the "COI" capability you will know that this is supported. You will find out configuration values and activate COI support for your user by calling `ENABLE COI`.
-
-Please refer to the forthcoming COI Server Specification for details.
+After signing into the IMAP service with your user credentials, call `CAPABILITY`. When the server returns the "COI" capability you will know that the server is COI compliant supported. 
+Compare the [COI Server Spec](coi-server-spec.md) for details about how to enable and configure COI.
 
 # Message Format
 Any chat message MUST be compliant with the [RFC 5322](https://tools.ietf.org/html/rfc5322) definition. If binary data is transmitted, the message additionally needs to conform to the MIME message standard ([RFC 2045](https://tools.ietf.org/html/rfc2045), [RFC 2046](https://tools.ietf.org/html/rfc2046), and [RFC 2049](https://tools.ietf.org/html/rfc2049)).
@@ -1292,7 +1291,7 @@ A COI-compliant client SHOULD support the [Autocrypt.org](https://autocrypt.org)
 Further encryption mechanisms will be defined in the future.
 
 
-# Separate COI and Mail Messages
+# Filter COI  Messages
 There are different scenarios for handling mail messages:
 * Some clients may treat all mail messages the same and provide a chat-centric experience for each one.
 * Other clients may want to differentiate between a traditional mail experience and a chat experience depending on the message or contact type.
@@ -1300,39 +1299,27 @@ There are different scenarios for handling mail messages:
 Depending on the client's and user's needs, clients MAY offer one of the following differentiation options:
 
 1. No differentiation, every new message ends up by default in the *Inbox*.
-2. Strict separation, chat messages will be moved to the *COI/CHATS* folder.
-3. Separation after having read. Chat messages will be moved to the *COI/CHATS* folder after having marked read.
+2. Strict separation, chat messages will be moved to the *COI/Chats* folder.
+3. Separation after having read. Chat messages will be moved to the *COI/Chats* folder after having marked as seen.
 
-### Configuring Separation on COI Servers
-On a COI-compliant server, the separation can be automated by the server. Note that depending on configuration values returned by the `ENABLE COI` IMAP command, a different folder prefix than *COI* may be used.
+### Configuring Message Filtering on COI Servers
+Compare the [COI Server Spec](coi-server-spec.md) to learn how message filtering is automated by COI compatible IMAP services.
 
-To configure the filtering, `APPEND` a message in the *COI/CONFIGURATION* folder that specifies filtering with the `COI-MESSAGE-FILTER` header field. 
 
-Possible value are:
-* `active`: chat and email messages are sorted 
-* `none`: chat messages stay in Inbox
-* `read`: only read chat messages are sorted
+### Manual Message Filtering
 
-*Example for an active filtering:*
-```
-From: user@domain
-Date: Mon, 11 Feb 2019 15:31:78 +0100 
-COI-Message-Filter: active
-```
-In case several messages exist with the `COI-MESSAGE-FILTER` header, only the newest message will be considered.
+Depending on the above scenarios, COI clients MAY move chat messages to the *COI/Chats* folder. In that case, replies from non-COI compliant clients to COI messages SHOULD be moved to the *COI/Chats* folder as well.
 
-### Manual Message Seperation
+COI messages are detected by having at least one these characteristics:
 
-Depending on the above scenarios, COI clients MAY move chat messages to the *COI/CHAT*S folder. In that case, replies from non-COI compliant clients to COI messages SHOULD be moved to the *COI/CHATS* folder as well.
+* The `Chat-Version` header is present.
+* The `Message-ID` header starts with `chat$`.
+* The first message-ID in the `References` header starts with `chat$`
 
-Replies of non-COI compliant clients can be identified as chat message by having:
 
-* Having a reference that starts with a message ID starting with `<chat$`, or
-* Having an `In-Reply-To` header field with a message-ID that starts with `<chat$`.
+For moving the message to *COI/Chats* a COI client has the following options:
 
-For moving the message to COI/CHATS a COI client has the following options:
-
-* Client listens for incoming mails on *INBOX* either using IMAP IDLE or IMAP NOTIFY, and then moves matching chat mails manually to *COI/CHATS*.
+* Client listens for incoming mails on *INBOX* either using IMAP IDLE or IMAP NOTIFY, and then moves matching chat mails manually to *COI/Chats*.
 * Pending the user's approval, a service could monitor incoming mails and do that.
 
 After moving a message that originates from the user herself/himself, identified either with the primary email address or a valid alias address, this message should be marked as read at the same time:
@@ -1364,11 +1351,11 @@ onNewIncomingMessage(msg) {
 # Folders
 When a COI client connects to a non-COI IMAP server, it might need to create several folders initially:
 
-* *COI/CHATS* for storing all chat messages. This folder SHOULD be subscribed the user.
-* *COI/CONTACTS* for storing contacts.
-* *BLOCKED* for storing messages originating from blocked contacts.
+* *COI/Chats* for storing all chat messages. This folder SHOULD be marked as subscribed by the user.
+* *COI/Contacts* for storing contacts.
+* *Blocked* for storing messages originating from blocked contacts.
 
-A COI-compliant folders generates these folders automatically when a client calls `ENABLE COI` for the first time. Additionally, the folder *COI/CONFIGURATION* is created, that is used for configuring the COI server.
+A COI-compliant folders generates these folders automatically when a client calls the respective `SETMETADATA` IMAP command, compare the [COI Server Spec](coi-server-spec.md) for details.
 
 
 *TODO describe IMAP details like subscription status*
