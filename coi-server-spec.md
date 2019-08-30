@@ -85,7 +85,7 @@ S: c OK
 Servers can be customized to use different namespaces.
 
 ### IMAP
-Servers MUST provide the configuration using a GETMETADATA call with using the `/private/vendor/vendor.dovecot/coi/config` path prefix.
+Servers MUST provide the configuration using a `GETMETADATA` call with using the `/private/vendor/vendor.dovecot/coi/config` path prefix.
 
 The following settings can be available under this config path, details are explained in the subsequent sections:
 
@@ -119,10 +119,12 @@ Clients indicate their desire for a mail account to begin supporting server-side
 
 Allowed values are:
 
-* `yes` for enabling COI for the current user, and
-* `no` for disabling COI.
+* `yes` for enabling COI. It is RECOMMENDED that this value is treated case-sensitive, i.e. only lower-case value are valid.
+* `NIL` for disabling COI. This removes the setting.
 
-Other values MAY result into a NO response. It is RECOMMENDED that values are treated case-sensitive, i.e. only lower-case values are valid.
+Other values SHOULD result into a NO response. Any other value than `yes` SHOULD be interpreted as COI being disabled.
+
+When reading the state, clients should check if the path `/private/vendor/vendor.dovecot/coi/config/enabled` is present and if the value for it is `yes`. Only when both statements are true, COI is enabled for the user.
 
 When the COI is enabled by the client and before returning a tagged OK response, the server MUST do the following:
 
@@ -143,7 +145,7 @@ S: a OK SETMETADATA complete
 *Example for disabling COI:*
 
 ```
-C: a SETMETADATA "" (/private/vendor/vendor.dovecot/config/coi/enabled no) 
+C: a SETMETADATA "" (/private/vendor/vendor.dovecot/config/coi/enabled NIL) 
 S: a OK SETMETADATA complete
 ```
 
