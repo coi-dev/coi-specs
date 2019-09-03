@@ -138,14 +138,14 @@ When COI is disabled, the server SHOULD stop filtering COI messages. The server 
 *Example for enabling COI:*
 
 ```
-C: a SETMETADATA "" (/private/vendor/vendor.dovecot/config/coi/enabled yes) 
+C: a SETMETADATA "" (/private/vendor/vendor.dovecot/coi/config/enabled yes) 
 S: a OK SETMETADATA complete
 ```
 
 *Example for disabling COI:*
 
 ```
-C: a SETMETADATA "" (/private/vendor/vendor.dovecot/config/coi/enabled NIL) 
+C: a SETMETADATA "" (/private/vendor/vendor.dovecot/coi/config/enabled NIL) 
 S: a OK SETMETADATA complete
 ```
 
@@ -160,7 +160,7 @@ It is RECOMMENDED that servers treat the deletion of the *\<MAILBOX-ROOT>/Chats*
 
 It is RECOMMENDED that servers treat the creation of the *\<MAILBOX-ROOT>/Chats* folder as an indirect request to enable COI for the user. The creation can be done either with a `CREATE` or with a `RENAME` call.
 
-If the server indirectly enables or disables COI, it MUST also update the corresponding METADATA setting under `/private/vendor/vendor.dovecot/config/coi/enabled`.
+If the server indirectly enables or disables COI, it MUST also update the corresponding METADATA setting under `/private/vendor/vendor.dovecot/coi/config/enabled`.
 
 ## Configure Message Filtering
 For non-COI compatible servers, messages are required to be organized into the COI folder namespace via COI-client behavior.  However, on COI compliant servers this can be done by the server. Once a user enables COI for an account, messages can be filtered automatically by the server at delivery, preventing the overhead of manual message manipulation on the client-side.
