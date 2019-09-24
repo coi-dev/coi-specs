@@ -164,7 +164,7 @@ COI-aware email clients and COI IMAP servers MUST send messages conforming to th
 * The `Chat-Content` header MAY be used in message headers and message part headers to identify the contents of a specific part. Possible values include:
   * *ignore* for parts that should not be shown to end users by a COI compliant client.
   * *status* for a part that contains the user status.
-  * *ammend* and *collapse* for edited and deleted messages.
+  * *editrequest* and *deleterequest* for edited and deleted messages.
   * *preview* for parts that contain a preview for a large message such as a video.
   * *contact* for a part that contains a full VCARD contact for syncing purposes.
   * *profile* for a part that contains information about the sending contact embedded in the HTML.
@@ -389,16 +389,16 @@ Clients should first download the envelope data of very large messages to detect
 
 To allow users to change already sent messages, a follow up edit message can be send. A COI-compatible client SHOULD only show the latest edited message, but it MAY make the history available. An edit message MAY be empty, this means that the original message should be shown as deleted. A COI client SHOULD visualize the edited state of a message.
 
-An edit message MUST contain set the `Chat-Content` header field to "ammend" and the `In-Reply-To` header field to the message-ID of the edited, for example:
+An edit message MUST contain set the `Chat-Content` header field to "editrequest" and the `In-Reply-To` header field to the message-ID of the edited, for example:
 
 ```
-Chat-Content: ammend
+Chat-Content: editrequest
 In-Reply-To: <chat$434571BC.8070702@sample.com>
 ```
-If a message should be deleted, then the COI client MUST set the `Chat-Content` header field to "collapsed":
+If a message should be deleted, then the COI client MUST set the `Chat-Content` header field to "deleterequest":
 
 ```
-Chat-Content: collapse; 
+Chat-Content: deleterequest; 
 In-Reply-To: <chat$434571BC.8070702@sample.com>
 ```
 
@@ -458,7 +458,7 @@ Message-ID: <chat$KJ23928L.112222312&8@sample.com>
 References: <chat$434571BC.89A707D2@sample.com> 
 Content-Type: text/plain; charset=UTF-8 
 Chat-Version: 1.0
-Chat-Content: collapsed
+Chat-Content: deleterequest
 In-Reply-To: <chat$2131232.AKJSD@sample.com>
 MIME-Version: 1.0  
  
