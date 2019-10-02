@@ -518,7 +518,7 @@ After sending the read receipt, the client MUST set the `$MDNSent` keyword for t
 
 ## Contact Storage Messages
 
-To synchronize contacts across devices, a client MAY store contacts as individual messages into the *COI/CONTACTS* folder. Note that on a COI-compatible IMAP server this folder is generated automatically, compare the COI server specification for details.  Also, the *COI* folder prefix may be different depending on the result of the `ENABLE COI` IMAP command.
+To synchronize contacts across devices, a client MAY store contacts as individual messages into the *COI/CONTACTS* folder. Note that on a COI-compatible IMAP server this folder is generated automatically, compare the COI server specification for details.  Also, the *COI* folder prefix may be different depending on COI server configuration.
 
 To keep the user in control, a COI client SHOULD ask the user for permission, before storing contacts on the server.
 
@@ -855,7 +855,7 @@ A group storage message contains the following data in the parent element `h-gro
 * `e-participants`: A list of participants, each one either identified by a `h-card`. An optional  hash of the email address acts as a pointer to a corresponding contact storage message. The hash is a SHA3-256 hash of the normalized email address; compare the definition of the `COI-From-Hash` header of contact storage messages. 
 
 
-Group storage messages SHOULD be stored in the *COI/CONTACTS* folder, unless the `ENABLE COI` IMAP command returns a differently configured folder prefix. Compare the COI server spec for details.
+Group storage messages SHOULD be stored in the *COI/CONTACTS* folder, note that this depends on the COI server configuration. Compare the COI server spec for details.
 
 *Example for a group storage message:*
 ```
