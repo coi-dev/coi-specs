@@ -12,7 +12,6 @@ Following topics need further discussion:
 
 # Table of Contents
 
-* [Status & Discussion](#status--discussion)
 * [Introduction](#introduction)
 * [Conventions Used in This Document](#conventions-used-in-this-document)
 * [COI Actors](#coi-actors)
@@ -21,16 +20,16 @@ Following topics need further discussion:
   * [Message Format Design Considerations](#message-format-design-considerations)
   * [Goals](#goals)
   * [Backwards Compatibility](#backwards-compatibility)
-  * [COI-specific Message Header Fields](#coi-specific-message-header-fields)
-  * [COI Base Formats](#coi-base-formats)
+* [COI-specific Message Header Fields](#coi-specific-message-header-fields)
+* [COI Base Formats](#coi-base-formats)
 * [Messages](#messages)
   * [Text Messages](#text-messages)
   * [Binary Messages](#binary-messages)
   * [Preview Message Parts](#preview-message-parts)
   * [Edit and Delete Messages](#edit-and-delete-messages)
   * [Read Receipts / Disposition Notification Reports](#read-receipts--disposition-notification-reports)
-    * [Requesting Read Receipts](#requesting-read-receipts)
-    * [Sending Read Receipts](#sending-read-receipts)
+  * [Requesting Read Receipts](#requesting-read-receipts)
+  * [Sending Read Receipts](#sending-read-receipts)
   * [Contact Storage Messages](#contact-storage-messages)
     * [Contact Storage Message Headers](#contact-storage-message-headers)
     * [Contact Storage Message Body](#contact-storage-message-body)
@@ -40,9 +39,9 @@ Following topics need further discussion:
     * [Merging Contact Storage Messages](#merging-contact-storage-messages)
   * [User Profile Messages](#user-profile-messages)
     * [User Profile Storage Message](#user-profile-storage-message)
-    * [User Profile Information Message Part](#user-profile-information-message-part)
+    * [User Profile Information Message Part](#user-profile-information-message-part
     * [Requesting Profile Information](#requesting-profile-information)
-    *  [Processing Received Profiles](#processing-received-profiles)
+    * [Processing Received Profiles](#processing-received-profiles)
   * [Group Messages](#group-messages)
     * [Sending a Chat Message to a Group](#sending-a-chat-message-to-a-group)
     * [Replying to a Group Message](#replying-to-a-group-message)
@@ -55,7 +54,7 @@ Following topics need further discussion:
     * [Group Messaging and Mailing Lists](#group-messaging-and-mailing-lists)
     * [Mentions in Group Messages](#mentions-in-group-messages)
     * [Changing Group Definitions and Processing Changes](#changing-group-definitions-and-processing-changes)
-      * [Processing Group Name Changes](#processing-group-name-changes)
+    * [Processing Group Name Changes](#processing-group-name-changes)
       * [Processing Group Participants Changes](#processing-group-participants-changes)
       * [Processing Group Description and Avatar Changes](#processing-group-description-and-avatar-changes)
       * [Processing Group Participant Changes](#processing-group-participant-changes)
@@ -63,12 +62,15 @@ Following topics need further discussion:
   * [Location Messages](#location-messages)
   * [Pinned Messages](#pinned-messages)
   * [Poll Messages](#poll-messages)
+    * [Poll Initiation Message](#poll-initiation-message)
+    * [Poll Vote Message](#poll-vote-message)
+    * [Poll Closed Message](#poll-closed-message)
   * [Extension Messages](#extension-messages)
-* [Message Encryption](#message-encryption)
-* [Separate COI and Mail Messages](#separate-coi-and-mail-messages)
-* [Configuring Separation on COI Servers](#configuring-separation-on-coi-servers)
-* [Manual Message Seperation](#manual-message-seperation)
-* [Folders](#folders)
+  * [Message Encryption](#message-encryption)
+  * [Filter COI  Messages](#filter-coi--messages)
+  * [Configuring Message Filtering on COI Servers](#configuring-message-filtering-on-coi-servers)
+  * [Manual Message Filtering](#manual-message-filtering)
+  * [Folders](#folders)
 * [Security Considerations](#security-considerations)
 * [IANA Considerations](#iana-considerations)
 
@@ -1327,7 +1329,7 @@ After moving a message that originates from the user herself/himself, identified
 *Example pseudo code for moving incoming messages:*
 ```
 onNewIncomingMessage(msg) {
-  if (msg.from == me && msg.to != me) {
+  if (msg.from == me && msg.to == me && msg.cc.isEmpty) {
     markMessageAsRead(msg);
     if (isCoiMessage(msg)) {
        if (isConfigurationMoveToCoiChats()) {
