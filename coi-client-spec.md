@@ -1329,7 +1329,8 @@ After moving a message that originates from the user herself/himself, identified
 *Example pseudo code for moving incoming messages:*
 ```
 onNewIncomingMessage(msg) {
-  if (msg.from == me && msg.to == me && msg.cc.isEmpty) {
+  if (msg.from == me && msg.to != me) { 
+    // this is a message from me to other users
     markMessageAsRead(msg);
     if (isCoiMessage(msg)) {
        if (isConfigurationMoveToCoiChats()) {
