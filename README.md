@@ -3,6 +3,7 @@ The open specification for COI compatible clients.
 
 * [COI Client Spec](coi-client-spec.md)
 * [COI Server Spec](coi-server-spec.md)
+* [WebPush IMAP Extension Spec](webpush-spec.md)
 * [SMTP: Submission Token Extension Draft](https://datatracker.ietf.org/doc/draft-slusarz-extra-smtp-submission-token/)
 
 # What is COI
