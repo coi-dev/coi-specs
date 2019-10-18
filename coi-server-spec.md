@@ -27,8 +27,8 @@ In a typical COI setup the following actors are involved:
 An IMAP COI server MUST implement the following standards:
 
 * IMAP 4rev1 [[RFC 3501](https://tools.ietf.org/html/rfc3501)]
-A subset of IMAP METADATA Extension [RFC 5464]; REQUIRES support for private annotations, see below
-* IMAP WebPush Extension (draft to be published soon)
+A subset of IMAP METADATA Extension [[RFC 5464](https://tools.ietf.org/html/rfc5464)]; REQUIRES support for private annotations, see below
+* [IMAP WebPush Extension](webpush-spec.md)
 
 #### Scope of METADATA Support
 A COI server MUST support the following subset of the IMAP METADATA Extension [[RFC 5464](https://tools.ietf.org/html/rfc5464)] standard:
