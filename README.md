@@ -24,7 +24,7 @@ Soon, additional functionalities will be made available by COI compatible IMAP s
 
 # Required Knowledge
 To build a COI application you need to know the following:  
-	•	How to communicate with and IMAP and SMTP server - This is usually done by using a native email library.  
+	•	How to communicate with IMAP and SMTP servers - This is usually done by using a native email library.
 	•	A good understanding of the COI protocol in both its variants (COI over simple IMAP servers and COI over COI extended IMAP servers).  
 	•	Know how to build your desired application.  
 	•	A basic understanding of the structure of SMTP/IMAP messages - Specifically an working knowledge of RFC 5322, but reading the COI protocol should give you most of what you need.
