@@ -50,7 +50,7 @@ The following standards are RECOMMENDED to be supported by a COI server:
   *Used to reduce traffic between client and server*
 * IMAP Extension for Referencing the Last SEARCH Result [[RFC 5182](https://tools.ietf.org/html/rfc5182)] and IMAP ESORT Extension [[RFC 5267](https://tools.ietf.org/html/rfc5267)]
 
-  *Improves efficiency of client sync *
+  *Improves efficiency of client sync*
 * IMAP4 Quick Flag Changes Resynchronization (CONDSTORE) and Quick Mailbox Resynchronization (QRESYNC) [[RFC 7162](https://tools.ietf.org/html/rfc7162)]
 
   *Improves efficiency of client sync*
@@ -97,11 +97,15 @@ Only mailbox-root MUST exist for any user of a COI server.
 *Example for reading configuration:*
 
 ```
-C: a GETMETADATA (DEPTH 1) "" /private/vendor/vendor.dovecot/coi/config
-S: * METADATA "" ("/private/vendor/vendor.dovecot/coi/config/mailbox-root" "COI")
-S: * METADATA "" ("/private/vendor/vendor.dovecot/coi/config/enabled" "yes")
-S: * METADATA "" ("/private/vendor/vendor.dovecot/coi/config/message-filter" "active")
-S: a OK GETMETADATA complete
+C: a5 GETMETADATA (DEPTH 1) "" (/private/vendor/vendor.dovecot/coi/config)
+S: * METADATA "" (/private/vendor/vendor.dovecot/coi/config/enabled {3}
+yes
+ /private/vendor/vendor.dovecot/coi/config/mailbox-root {3}
+COI
+ /private/vendor/vendor.dovecot/coi/config/message-filter {6}
+active
+)
+S: a5 OK Getmetadata completed (0.001 + 0.000 secs).
 ```
 
 *Example for unsuccessfully setting the `mailbox-root`:*
