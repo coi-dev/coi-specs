@@ -99,12 +99,9 @@ Only mailbox-root MUST exist for any user of a COI server.
 ```
 C: a5 GETMETADATA (DEPTH 1) "" (/private/vendor/vendor.dovecot/coi/config)
 S: * METADATA "" (/private/vendor/vendor.dovecot/coi/config/enabled {3}
-yes
- /private/vendor/vendor.dovecot/coi/config/mailbox-root {3}
-COI
- /private/vendor/vendor.dovecot/coi/config/message-filter {6}
-active
-)
+yes /private/vendor/vendor.dovecot/coi/config/mailbox-root {3}
+COI /private/vendor/vendor.dovecot/coi/config/message-filter {6}
+active)
 S: a5 OK Getmetadata completed (0.001 + 0.000 secs).
 ```
 
