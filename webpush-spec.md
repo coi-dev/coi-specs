@@ -123,6 +123,7 @@ Accepted contents for the data is a JSON-serialized object with the following en
   * `"chat"`: for chat messages, for the purpose of this documentation a chat email message is marked with the $Chat keyword . Compare for example the [COI Server Specification v1.0](coi-server-spec.md) for how to detect chat messages.
   * `"mail"`: for standard mail messages, excluding chat email messages.
   * `"all"`: for both standard mail and chat messages.
+* exclude_from: OPTIONAL list of mail addresses. If a mail address in this list matches the `from-email` for a notification it will not be sent to the MUA.
 * resource: object, the push resource as specified by [[RFC 8030](https://tools.ietf.org/html/rfc8030)] and [[RFC 8292](https://tools.ietf.org/html/rfc8292)] with the children `endpoint` and `keys`.
   * `endpoint` specifies the URL for sending push requests (string, max length is 512 octets).
   * `keys` specifies the encryption keys:
@@ -141,11 +142,12 @@ A server MUST allow several clients to be subscribed at the same time. The serve
 
 *Example for subscribing for receiving push notifications when Literal+ is supported [[RFC 7888](https://tools.ietf.org/html/rfc7888)]:*
 ```
-C: a SETMETADATA "" (/private/vendor/vendor.dovecot/webpush/subscriptions/31754ee7-d3ee-4226-b112-6895ed26fcf8 {370+}
+C: a SETMETADATA "" (/private/vendor/vendor.dovecot/webpush/subscriptions/31754ee7-d3ee-4226-b112-6895ed26fcf8 {416+}
 {
     "client": "My awesome WebPush App",
     "device": "My Favorite Smartphone",
     "msgtype": "chat",
+    "exclude_from": [ "sender@domain.com" ],
     "resource":
     {
         "endpoint": "https://my-push-service.com/some-kind-of-unique-id-1234/v2/",
