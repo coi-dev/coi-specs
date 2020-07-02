@@ -39,7 +39,7 @@ Following topics need further discussion:
     * [Merging Contact Storage Messages](#merging-contact-storage-messages)
   * [User Profile Messages](#user-profile-messages)
     * [User Profile Storage Message](#user-profile-storage-message)
-    * [User Profile Information Message Part](#user-profile-information-message-part
+    * [User Profile Information Message Part](#user-profile-information-message-part)
     * [Requesting Profile Information](#requesting-profile-information)
     * [Processing Received Profiles](#processing-received-profiles)
   * [Group Messages](#group-messages)
